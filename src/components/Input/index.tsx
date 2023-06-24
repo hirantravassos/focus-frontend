@@ -97,7 +97,7 @@ export default function HcInput(
             {...animationDefault}
             className={
                 `${styles.main} ` +
-                `${value ? styles.focus : ``} ` +
+                `${value ? styles.value : ``} ` +
                 `${disabled ? styles.disabled : ``} `
             }
             style={{

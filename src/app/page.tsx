@@ -188,9 +188,18 @@ function InputsDemo() {
 
 function AutocompleteDemo() {
     const [data, setData] = useState({
-        mask: ``,
-        username: `Hiran Travassos Sarinho`,
-        number: `123456`
+        mask: {
+            id: null,
+            value: null
+        },
+        username: {
+            id: null,
+            value: null
+        },
+        number: {
+            id: null,
+            value: null
+        }
     })
 
     useEffect(() => {
@@ -203,7 +212,7 @@ function AutocompleteDemo() {
                 label={`Habilitado Obrigatório`}
                 name={`name`}
                 width={'300px'}
-                value={data?.username}
+                value={data?.username?.value}
                 required={true}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
@@ -215,7 +224,7 @@ function AutocompleteDemo() {
                 label={`Mascara`}
                 name={`mask`}
                 width={'300px'}
-                value={data?.mask}
+                value={data?.mask?.value}
                 mask={`000.000.000-00`}
                 type={`text`}
                 onChange={(value) => setData((prev: any) => ({
@@ -227,7 +236,7 @@ function AutocompleteDemo() {
                 label={`Nome e ícone`}
                 name={`name`}
                 width={'300px'}
-                value={data?.username}
+                value={data?.username?.value}
                 type={"text"}
                 icon={`icon-park-twotone:edit-name`}
                 required={true}
@@ -240,7 +249,7 @@ function AutocompleteDemo() {
                 label={`Nome Completo e Hint`}
                 name={`name`}
                 width={'300px'}
-                value={data?.username}
+                value={data?.username?.value}
                 hint={`Insira seu nome.`}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
@@ -251,7 +260,7 @@ function AutocompleteDemo() {
                 label={`Número`}
                 name={`number`}
                 width={'300px'}
-                value={data?.number}
+                value={data?.number?.value}
                 invalid={true}
                 required={true}
                 type={`number`}

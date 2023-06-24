@@ -2,8 +2,8 @@
 
 import styles from './index.module.scss';
 import {Fragment, MouseEventHandler, useEffect, useRef, useState} from 'react';
-import {motion as m} from 'framer-motion'
-import {animationDefault} from "@/styles/framer-motion";
+import {AnimatePresence, motion as m} from 'framer-motion'
+import {animationDefault, animationPopUp} from "@/styles/framer-motion";
 import {Icon} from "@iconify/react";
 import {Mask} from "@/utils/mask";
 import {NumericFormat} from 'react-number-format';
@@ -13,7 +13,7 @@ type IAutocomplete = {
     label?: string,
     name?: string,
     width?: string,
-    value?: string,
+    value?: string | null,
     icon?: string,
     loading?: boolean,
     hint?: string | null,
@@ -22,7 +22,8 @@ type IAutocomplete = {
     disabled?: boolean,
     invalid?: boolean,
     errorMessage?: string,
-    onChange?: (value: string) => void,
+    onChange?: (value: any) => void,
+    onSearch?: (value: string) => void,
     decimals?: number,
     max?: number
     min?: number
@@ -36,7 +37,7 @@ export default function HcAutocomplete(
         label,
         name,
         width = '100%',
-        value = ``,
+        value = null,
         type = `text`,
         decimals,
         max,
@@ -49,6 +50,7 @@ export default function HcAutocomplete(
         invalid = false,
         errorMessage = ``,
         onChange,
+        onSearch,
     }: IAutocomplete) {
     const [focus, setFocus] = useState<boolean>(false)
     const [hover, setHover] = useState<boolean>(false)
@@ -56,14 +58,20 @@ export default function HcAutocomplete(
 
     const [isInvalid, setIsInvalid] = useState<boolean>(false)
 
-    const handleChange = (e: any) => {
+    const handleSearch = (e: any) => {
         const responseValue = handleMask(e.target.value)
-        if (onChange) {
-            onChange(responseValue?.raw)
+        if (onSearch) {
+            onSearch(responseValue?.raw)
         }
     }
 
-    const handleMask = (unmaskedValue: string) => {
+    const handleChange = (allValuesFromRow: any) => {
+        if (onChange) {
+            onChange(allValuesFromRow)
+        }
+    }
+
+    const handleMask = (unmaskedValue: string | null) => {
         if (mask) {
             return Mask(unmaskedValue, mask)
         }
@@ -109,7 +117,7 @@ export default function HcAutocomplete(
             {...animationDefault}
             className={
                 `${styles.main} ` +
-                `${value ? styles.focus : ``} ` +
+                `${value ? styles.value : ``} ` +
                 `${disabled ? styles.disabled : ``} `
             }
             style={{
@@ -149,7 +157,7 @@ export default function HcAutocomplete(
                             const syntheticEvent = {
                                 target: {value: values.floatValue}
                             }
-                            handleChange(syntheticEvent)
+                            handleSearch(syntheticEvent)
                         }}
                         onKeyUp={handleRequired}
                         isAllowed={handleNumberLimits}
@@ -165,8 +173,8 @@ export default function HcAutocomplete(
                             `${styles.input} ` +
                             `${icon ? styles.has_icon : ``} `
                         }
-                        value={handleMask(value)?.mask}
-                        onChange={handleChange}
+                        value={handleMask(value)?.mask || ``}
+                        onChange={handleSearch}
                         onKeyUp={handleRequired}
                         disabled={disabled}
                     />
@@ -180,22 +188,27 @@ export default function HcAutocomplete(
                     <span className={styles.errorMessage}>{errorMessage}</span>
                 }
             </div>
-            {show && !disabled &&
-                <div className={styles.list}>
-                    {mockData?.map((row, index) => {
-                        return (
-                            <Fragment key={index}>
-                                <div
-                                    className={styles.row}
-                                    onClick={() => console.log(`click`, row?.value)}
-                                >
-                                    <span>{row?.value}</span>
-                                </div>
-                            </Fragment>
-                        )
-                    })}
-                </div>
-            }
+            <AnimatePresence>
+                {show && !disabled &&
+                    <m.div
+                        className={styles.list}
+                        {...animationPopUp}
+                    >
+                        {mockData?.map((row, index) => {
+                            return (
+                                <Fragment key={index}>
+                                    <div
+                                        className={styles.row}
+                                        onClick={() => handleChange(row)}
+                                    >
+                                        <span>{row?.value}</span>
+                                    </div>
+                                </Fragment>
+                            )
+                        })}
+                    </m.div>
+                }
+            </AnimatePresence>
         </m.div>
     );
 }

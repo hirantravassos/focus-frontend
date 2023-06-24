@@ -28,7 +28,7 @@
   }
 }
 
-@mixin focus() {
+@mixin value() {
   box-shadow: $shadow-small;
 
   .top {
@@ -107,6 +107,14 @@
 
   &.disabled {
     @include disabled()
+  }
+}
+
+@mixin focus() {
+  .top {
+    .label {
+      background-color: $primary!important;
+    }
   }
 }
 
@@ -215,11 +223,12 @@
   }
 
   &:focus-within {
+    @include value();
     @include focus()
   }
 
-  &.focus {
-    @include focus()
+  &.value {
+    @include value()
   }
 
   &.disabled {
