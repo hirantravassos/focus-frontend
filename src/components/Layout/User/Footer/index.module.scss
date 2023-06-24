@@ -1,0 +1,40 @@
+@import "@/styles/theme.module";
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: auto;
+  padding: 30px;
+  background-color: $primary-dark;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  align-items: center;
+  flex: 1;
+}
+
+.title {
+  font-size: larger;
+  color: $greyscale-xxx-light;
+  margin-bottom: 20px;
+}
+
+.row {
+  padding: 8px;
+  margin: 4px;
+  border-radius: 6px;
+  color: $greyscale-xxx-light;
+  text-decoration: none;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: $greyscale-xxx-light;
+    color: $primary;
+    cursor: pointer;
+  }
+}

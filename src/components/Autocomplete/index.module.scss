@@ -1,0 +1,259 @@
+@import "@/styles/theme.module";
+
+@mixin invalid() {
+  border: 1px solid $danger;
+  background-color: $danger;
+}
+
+@mixin disabled() {
+  .label {
+    background-color: $greyscale-light;
+    cursor: not-allowed;
+  }
+
+  .top {
+    cursor: not-allowed;
+  }
+
+  .middle {
+    cursor: not-allowed;
+
+    .input {
+      cursor: not-allowed;
+    }
+  }
+
+  .bottom {
+    cursor: not-allowed;
+  }
+}
+
+@mixin focus() {
+  box-shadow: $shadow-small;
+
+  .top {
+    position: relative;
+    flex: 2;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .label {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      position: relative;
+      background-color: $greyscale;
+      color: $greyscale-xxx-light;
+      width: 55%;
+      height: 100%;
+      font-size: 12px;
+      padding-left: 10px;
+      border-bottom-right-radius: 50px;
+      border-top-left-radius: 8px;
+      z-index: 2;
+      text-transform: none;
+
+      &.invalid {
+        @include invalid()
+      }
+    }
+
+    .hint {
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      left: 45%;
+      width: 55%;
+      font-size: 12px;
+      padding-left: calc(10% + 6px);
+      height: 100%;
+      z-index: 1;
+    }
+  }
+
+  .middle {
+    position: relative;
+    flex: 3;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .icon {
+      color: $greyscale;
+      transition: all 0.2s;
+    }
+
+    .input {
+      position: relative;
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: medium;
+      letter-spacing: 1px;
+      color: $greyscale-xx-dark;
+      //background-color: ;
+      padding: 0 10px;
+    }
+
+    .has_icon {
+      &.input {
+        padding-left: 30px;
+      }
+    }
+  }
+
+  &.disabled {
+    @include disabled()
+  }
+}
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 55px;
+  border-radius: 4px;
+  margin: 4px 6px 24px 6px;
+  //border: 1px solid $greyscale;
+  transition: all 0.3s ease-out;
+
+  .top {
+    position: relative;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    transition: all 0.3s;
+
+    .label {
+      position: relative;
+      display: flex;
+      align-items: center;
+      background-color: $greyscale;
+      color: $greyscale-xxx-light;
+      width: 100%;
+      font-size: 16px;
+      text-transform: uppercase;
+      padding-left: 10px;
+      height: 100%;
+      z-index: 2;
+      border-radius: 4px;
+      transition: all 0.3s;
+      user-select: none;
+
+      &.invalid {
+        @include invalid()
+      }
+    }
+
+    .has_icon {
+      &.label {
+        padding-left: 40px;
+      }
+    }
+
+    .hint {
+      position: absolute;
+      left: 45%;
+      width: 55%;
+      height: 100%;
+      transition: all 0.3s;
+    }
+  }
+
+  .middle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    transition: all 0.3s;
+
+    .icon {
+      position: absolute;
+      display: flex;
+      left: 0;
+      top: 0;
+      padding: 8px;
+      height: 100%;
+      width: 40px;
+      z-index: 2;
+      color: $greyscale-xxx-light;
+      transition: all 0.2s;
+    }
+
+    .input {
+      position: absolute;
+      color: rgba(255, 255, 255, 0);
+      background-color: rgba(255, 255, 255, 0);
+      padding: 0 0;
+      height: calc(100% - 12px);
+      width: calc(100% - 12px);
+      margin: 6px;
+      outline: none;
+      border: none;
+      transition: all 0.3s, color 0s;
+    }
+  }
+
+  .bottom {
+    height: 0;
+    width: 100%;
+    margin-left: 10px;
+    transition: all 0.3s;
+
+    .errorMessage {
+      font-size: 10px;
+      color: $danger;
+    }
+  }
+
+  &:focus-within {
+    @include focus()
+  }
+
+  &.focus {
+    @include focus()
+  }
+
+  &.disabled {
+    @include disabled()
+  }
+}
+
+.list {
+  position: absolute;
+  top: 60px;
+  z-index: 999;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $greyscale-xxx-light;
+  padding: 2px;
+  box-shadow: $shadow;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  .row {
+    display: flex;
+    flex-direction: row;
+    margin: 2px;
+    padding: 6px;
+    border-radius: 4px;
+    user-select: none;
+    transition: all 0.1s;
+
+    &:hover {
+      background-color: $primary;
+      color: $greyscale-xxx-light;
+      box-shadow: $shadow;
+      cursor: pointer;
+    }
+  }
+}

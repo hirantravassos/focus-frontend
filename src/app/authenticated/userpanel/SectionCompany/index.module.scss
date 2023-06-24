@@ -1,0 +1,44 @@
+@import "@/styles/theme.module";
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  //padding: 20px;
+  //border-radius: 6px;
+  //border: $border;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 12px;
+  padding: 12px;
+  background-color: $primary;
+  color: $greyscale-xxx-light;
+  border-radius: 6px;
+}
+
+.section {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+  .description {
+    flex: 1;
+    padding: 6px;
+    margin: 4px 12px;
+    background-color: $primary-light;
+    color: $greyscale-xxx-light;
+    border-radius: 6px;
+    text-align: right;
+  }
+
+  .value {
+    flex: 5;
+    padding: 6px;
+    margin: 4px;
+  }
+}

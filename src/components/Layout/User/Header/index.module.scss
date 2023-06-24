@@ -1,0 +1,69 @@
+@import "@/styles/theme.module";
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 80px;
+  background-color: $primary;
+  padding: 8px 20px;
+  box-shadow: $shadow-large;
+}
+
+.brand {
+  flex: 1;
+  border-radius: 6px;
+
+  img {
+    height: 100%;
+  }
+}
+
+.items {
+  flex: 3;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 0.2s;
+
+  a {
+    margin: 0 6px;
+    color: $greyscale-xxx-light;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      padding: 8px;
+      background-color: $greyscale-xxx-light;
+      color: $primary;
+      cursor: pointer;
+    }
+  }
+}
+
+.logout {
+  flex: 1;
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  transition: all 0.2s;
+
+  a {
+    //flex: 1;
+    color: $greyscale-xxx-light;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      padding: 8px;
+      background-color: $danger;
+      color: $greyscale-xxx-light;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+// Primary
+$primary: rgb(0, 119, 204);
+$primary-light: lighten($primary, 20%);
+$primary-dark: darken($primary, 20%);
+
+// Grey Scale
+$greyscale: #6b6b6b;
+$greyscale-xxx-light: lighten($greyscale, 100%);
+$greyscale-xx-light: lighten($greyscale, 40%);
+$greyscale-x-light: lighten($greyscale, 20%);
+$greyscale-light: lighten($greyscale, 10%);
+$greyscale-dark: darken($greyscale, 10%);
+$greyscale-x-dark: darken($greyscale, 20%);
+$greyscale-xx-dark: darken($greyscale, 40%);
+$greyscale-xxx-dark: darken($greyscale, 100%);
+
+// Danger
+$danger: #ff3232;
+$danger-light: lighten($danger, 36%);
+
+// Alert
+$alert: #ffbe32;
+$alert-light: lighten($alert, 36%);
+
+// Info
+$info: #32cfff;
+$info-light: lighten($info, 36%);
+
+// Shadow
+$shadow: 0 0 10px rgba(0, 0, 0, 0.42);
+$shadow-large: 0 0 10px rgba(0, 0, 0, 0.42);
+$shadow-small: 0 0 5px rgba(0, 0, 0, 0.42);
+
+// Border
+$border: 1px solid $greyscale-light;
+$border-light: 1px solid $greyscale-x-light;
+
+//:export {
+//  primary: $primary;
+//  primaryLight: $primary-light;
+//  primaryDark: $primary-dark;
+//
+//  greyscaleXXXLight: $greyscale-xxx-light;
+//  greyscaleXXLight: $greyscale-xx-light;
+//  greyscaleXLight: $greyscale-x-light;
+//  greyscaleLight: $greyscale-light;
+//  greyscale: $greyscale;
+//  greyscaleDark: $greyscale-dark;
+//  greyscaleXDark: $greyscale-x-dark;
+//  greyscaleXXDark: $greyscale-xx-dark;
+//  greyscaleXXXDark: $greyscale-xxx-dark;
+//
+//  danger: $danger;
+//  danger-light: $danger-light;
+//}

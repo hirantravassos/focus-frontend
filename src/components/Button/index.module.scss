@@ -1,0 +1,279 @@
+@import "@/styles/theme.module";
+
+.main {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 55px;
+  border-radius: 4px;
+  padding: 6px;
+  margin: 4px 6px 24px 6px;
+
+  .label {
+    flex: 1;
+    text-align: center;
+    text-transform: uppercase;
+    user-select: none;
+  }
+
+  .icon {
+    display: flex;
+    margin: 0 8px 0 4px;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+  }
+
+  &.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+
+    &:hover {
+      cursor: not-allowed !important;
+    }
+  }
+
+  &.disabled {
+    background-color: $greyscale-x-light!important;
+    border-color: $greyscale-x-light!important;
+    color: $greyscale-xx-light!important;
+    box-shadow: 0 0 0 white!important;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: $greyscale-x-light!important;
+      border-color: $greyscale-x-light!important;
+      color: $greyscale-xx-light!important;
+      box-shadow: 0 0 0 white!important;
+      cursor: not-allowed !important;
+    }
+
+    &:active {
+      background-color: $greyscale-x-light!important;
+      border-color: $greyscale-x-light!important;
+      font-size: 16px!important;
+      color: $greyscale-xx-light!important;
+      box-shadow: 0 0 0 white!important;
+      cursor: not-allowed !important;
+    }
+  }
+}
+
+@mixin outlined($backgroundColor, $fontColor) {
+  border: 1px solid $fontColor;
+  color: $fontColor;
+  background-color: $backgroundColor;
+
+  &:hover {
+    border-color: darken($fontColor, 2.5%);
+    background-color: darken($backgroundColor, 2.5%);
+    cursor: pointer;
+  }
+
+  &:active {
+    border-color: darken($fontColor, 6%);
+    background-color: darken($backgroundColor, 6%);
+    color: $fontColor;
+    font-size: 19px;
+    cursor: pointer;
+  }
+}
+
+@mixin filled($backgroundColor, $fontColor) {
+  border: 1px solid $backgroundColor;
+  color: $fontColor;
+  background-color: $backgroundColor;
+
+  &:hover {
+    border-color: darken($backgroundColor, 4.5%);
+    background-color: darken($backgroundColor, 4.5%);
+    cursor: pointer;
+  }
+
+  &:active {
+    border-color: darken($backgroundColor, 12%);
+    background-color: darken($backgroundColor, 12%);
+    color: $fontColor;
+    font-size: 19px;
+    cursor: pointer;
+  }
+}
+
+@mixin plain($backgroundColor, $fontColor) {
+  border: 1px solid $backgroundColor;
+  color: $fontColor;
+  background-color: $backgroundColor;
+
+  &:hover {
+    border-color: darken($backgroundColor, 2.5%);
+    background-color: darken($backgroundColor, 2.5%);
+    cursor: pointer;
+  }
+
+  &:active {
+    border-color: darken($backgroundColor, 6%);
+    background-color: darken($backgroundColor, 6%);
+    color: $fontColor;
+    font-size: 19px;
+    cursor: pointer;
+  }
+}
+
+.appearance-primary {
+  $appearanceColor: $primary;
+  transition: all 0.4s;
+
+  &.variant-outlined {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include outlined($backgroundColor, $fontColor)
+  }
+
+  &.variant-filled {
+    $backgroundColor: $appearanceColor;
+    $fontColor: white;
+
+    @include filled($backgroundColor, $fontColor)
+  }
+
+  &.variant-plain {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include plain($backgroundColor, $fontColor)
+  }
+}
+
+.appearance-secondary {
+  $appearanceColor: $primary-dark;
+  transition: all 0.4s;
+
+  &.variant-outlined {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include outlined($backgroundColor, $fontColor)
+  }
+
+  &.variant-filled {
+    $backgroundColor: $appearanceColor;
+    $fontColor: white;
+
+    @include filled($backgroundColor, $fontColor)
+  }
+
+  &.variant-plain {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include plain($backgroundColor, $fontColor)
+  }
+}
+
+.appearance-neutral {
+  $appearanceColor: $greyscale;
+  transition: all 0.4s;
+
+  &.variant-outlined {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include outlined($backgroundColor, $fontColor)
+  }
+
+  &.variant-filled {
+    $backgroundColor: $appearanceColor;
+    $fontColor: white;
+
+    @include filled($backgroundColor, $fontColor)
+  }
+
+  &.variant-plain {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include plain($backgroundColor, $fontColor)
+  }
+}
+
+.appearance-danger {
+  $appearanceColor: $danger;
+  transition: all 0.4s;
+
+  &.variant-outlined {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include outlined($backgroundColor, $fontColor)
+  }
+
+  &.variant-filled {
+    $backgroundColor: $appearanceColor;
+    $fontColor: white;
+
+    @include filled($backgroundColor, $fontColor)
+  }
+
+  &.variant-plain {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include plain($backgroundColor, $fontColor)
+  }
+}
+
+.appearance-alert {
+  $appearanceColor: $alert;
+  transition: all 0.4s;
+
+  &.variant-outlined {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include outlined($backgroundColor, $fontColor)
+  }
+
+  &.variant-filled {
+    $backgroundColor: $appearanceColor;
+    $fontColor: white;
+
+    @include filled($backgroundColor, $fontColor)
+  }
+
+  &.variant-plain {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include plain($backgroundColor, $fontColor)
+  }
+}
+
+.appearance-info {
+  $appearanceColor: $info;
+  transition: all 0.4s;
+
+  &.variant-outlined {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include outlined($backgroundColor, $fontColor)
+  }
+
+  &.variant-filled {
+    $backgroundColor: $appearanceColor;
+    $fontColor: white;
+
+    @include filled($backgroundColor, $fontColor)
+  }
+
+  &.variant-plain {
+    $backgroundColor: lighten($appearanceColor, 100%);
+    $fontColor: $appearanceColor;
+
+    @include plain($backgroundColor, $fontColor)
+  }
+}
