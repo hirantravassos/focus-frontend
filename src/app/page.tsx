@@ -1,15 +1,12 @@
 'use client'
 
-import {useRouter} from 'next/navigation';
 import HcButton from "@/components/Button";
 import HcInput from "@/components/Input";
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import HcAutocomplete from "@/components/Autocomplete";
+import {IColor} from "@/styles/theme";
 
 export default function Home() {
-    const router = useRouter()
-
-
     return (
         <>
             <main style={{display: 'flex', flexDirection: 'row'}}>
@@ -98,8 +95,8 @@ function InputsDemo() {
     })
 
     useEffect(() => {
-        console.log(`data`,data)
-    },[data])
+        console.log(`data`, data)
+    }, [data])
 
     return (
         <>
@@ -188,105 +185,214 @@ function InputsDemo() {
 
 function AutocompleteDemo() {
     const [data, setData] = useState({
-        mask: {
-            id: null,
-            value: null
-        },
-        username: {
-            id: null,
-            value: null
-        },
-        number: {
-            id: null,
-            value: null
-        }
+        data1: {id: 0, value: `Valor 1`, cnpj: `12345678910`, number: 0.123},
+        data2: null,
+        data3: null,
+        data4: null,
     })
 
+    const dataComponents = {
+        data1: [
+            {
+                component: ({values}: any) => {
+                    return (
+                        <div>{values?.value}</div>
+                    )
+                }
+            }
+        ],
+        data2: [
+            {
+                component: ({values}: any) => {
+                    return (
+                        <div>{values?.cnpj}</div>
+                    )
+                }
+            }
+        ],
+        data3: [
+            {
+                component: ({values}: any) => {
+                    return (
+                        <div>{values?.number}</div>
+                    )
+                }
+            }
+        ],
+        data4: [
+            {
+                component: ({values}: any) => {
+                    return (
+                        <div>{values?.value}</div>
+                    )
+                }
+            }
+        ],
+    }
+
+
     useEffect(() => {
-        console.log(`data`,data)
-    },[data])
+        console.log(`data`, data)
+    }, [data])
 
     return (
         <>
             <HcAutocomplete
+                data={mockData}
+                dataComponents={dataComponents?.data1}
                 label={`Habilitado Obrigatório`}
                 name={`name`}
                 width={'300px'}
-                value={data?.username?.value}
+                maxHeight={`200px`}
+                value={{key: `value`, selected: data?.data1}}
                 required={true}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
-                    username: value
+                    data1: value
                 }))}
                 errorMessage={`Campo obrigatório!`}
             />
             <HcAutocomplete
+                data={mockData}
+                dataComponents={dataComponents?.data2}
                 label={`Mascara`}
                 name={`mask`}
                 width={'300px'}
-                value={data?.mask?.value}
+                maxHeight={`300px`}
+                value={{key: `cnpj`, selected: data?.data2}}
                 mask={`000.000.000-00`}
-                type={`text`}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
-                    mask: value
+                    data2: value
                 }))}
             />
             <HcAutocomplete
+                data={mockData}
+                dataComponents={dataComponents?.data3}
                 label={`Nome e ícone`}
                 name={`name`}
                 width={'300px'}
-                value={data?.username?.value}
-                type={"text"}
+                maxHeight={`200px`}
+                value={{key: `value`, selected: data?.data3}}
                 icon={`icon-park-twotone:edit-name`}
                 required={true}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
-                    username: value
+                    data3: value
                 }))}
             />
             <HcAutocomplete
+                data={mockData}
+                dataComponents={dataComponents?.data4}
                 label={`Nome Completo e Hint`}
                 name={`name`}
                 width={'300px'}
-                value={data?.username?.value}
+                maxHeight={`200px`}
+                value={{key: `value`, selected: data?.data4}}
                 hint={`Insira seu nome.`}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
-                    username: value
+                    data4: value
                 }))}
             />
             <HcAutocomplete
-                label={`Número`}
-                name={`number`}
-                width={'300px'}
-                value={data?.number?.value}
-                invalid={true}
-                required={true}
-                type={`number`}
-                decimals={2}
-                max={2000}
-                min={-2000000}
-                errorMessage={`Campo inválido!`}
-                onChange={(value) => setData((prev: any) => ({
-                    ...prev,
-                    number: value
-                }))}
-            />
-            <HcAutocomplete
+                data={mockData}
+                dataComponents={[]}
                 label={`Nome Completo`}
                 name={`name`}
                 width={'300px'}
-                value={`Desabilitado`}
+                maxHeight={`200px`}
+                value={{key: `value`, selected: {value: "Desabilitado"}}}
                 disabled={true}
             />
             <HcAutocomplete
+                data={mockData}
                 label={`Desabilitado Sem Valor`}
                 name={`name`}
                 width={'300px'}
-                value={``}
+                maxHeight={`200px`}
+                value={{key: `value`, selected: null}}
                 disabled={true}
             />
         </>
     )
 }
+
+const mockData = [
+    {id: 0, value: `Valor 1`, cnpj: `12345678910`, number: 0.123},
+    {id: 1, value: `Valor 2`, cnpj: `12345678920`, number: 111.123},
+    {id: 2, value: `Valor 3`, cnpj: `12345678930`, number: 222.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
+]

@@ -1,7 +1,6 @@
 @import "@/styles/theme.module";
 
 @mixin invalid() {
-  border: 1px solid $danger;
   background-color: $danger;
 }
 
@@ -19,6 +18,10 @@
     cursor: not-allowed;
 
     .input {
+      cursor: not-allowed;
+    }
+
+    .searchInput {
       cursor: not-allowed;
     }
   }
@@ -87,6 +90,18 @@
     }
 
     .input {
+      position: absolute;
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: medium;
+      letter-spacing: 1px;
+      color: $greyscale-xx-dark;
+      //background-color: ;
+      padding: 0 10px;
+    }
+
+    .searchInput {
       position: relative;
       flex: 1;
       border: none;
@@ -102,6 +117,10 @@
       &.input {
         padding-left: 30px;
       }
+
+      &.searchInput {
+        padding-left: 30px;
+      }
     }
   }
 
@@ -114,6 +133,23 @@
   .top {
     .label {
       background-color: $primary!important;
+    }
+  }
+
+  .middle {
+    z-index: 999!important;
+
+    .searchInput {
+      position: absolute!important;
+      top: 40px;
+      left: 40px;
+      width: calc(100% - 55px)!important;
+      height: 35px;
+      padding-left: 12px;
+      z-index: 999!important;
+      background-color: rgb(241, 241, 241);
+      border-radius: 4px;
+      transition: all 0.3s;
     }
   }
 }
@@ -208,6 +244,19 @@
       border: none;
       transition: all 0.3s, color 0s;
     }
+
+    .searchInput {
+      position: absolute;
+      color: rgba(255, 255, 255, 0);
+      background-color: rgba(255, 255, 255, 0);
+      padding: 0 0;
+      height: calc(100% - 12px);
+      width: calc(100% - 12px);
+      margin: 6px;
+      outline: none;
+      border: none;
+      transition: all 0s;
+    }
   }
 
   .bottom {
@@ -236,33 +285,126 @@
   }
 }
 
-.list {
+.container {
   position: absolute;
   top: 60px;
-  z-index: 999;
+  z-index: 990;
   width: 100%;
+
   display: flex;
   flex-direction: column;
   background-color: $greyscale-xxx-light;
   padding: 2px;
   box-shadow: $shadow;
   border-radius: 4px;
+  overflow-y: visible;
+  overflow-x: hidden;
   transition: all 0.3s;
 
-  .row {
+  .rowSearch {
+    position: relative;
     display: flex;
     flex-direction: row;
-    margin: 2px;
-    padding: 6px;
-    border-radius: 4px;
-    user-select: none;
-    transition: all 0.1s;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 45px;
+    width: 100%;
 
-    &:hover {
-      background-color: $primary;
-      color: $greyscale-xxx-light;
-      box-shadow: $shadow;
-      cursor: pointer;
+    .rowSearchIcon {
+      color: $greyscale;
+      font-size: x-large;
+      margin-left: 10px;
+    }
+  }
+
+  .list {
+    position: absolute;
+    top: 55px;
+    z-index: 990;
+    width: 98%;
+    display: flex;
+    flex-direction: column;
+    //background-color: $greyscale-xxx-light;
+    padding: 2px;
+    //border-radius: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    transition: all 0.3s;
+
+    .removeValue {
+      color: $danger-light !important;
+
+      &:hover {
+        color: $greyscale-xxx-light !important;
+        background-color: $danger-light !important;
+      }
+    }
+
+    .row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin: 2px;
+      padding: 6px;
+      border-radius: 4px;
+      user-select: none;
+      transition: all 0.1s;
+
+      .rowLabel {
+        color: $greyscale-dark;
+        font-size: x-small;
+        margin-right: 6px;
+      }
+
+      .rowValue {
+        padding: 4px;
+      }
+
+      .rowIcon {
+        margin-right: 8px;
+      }
+
+      .primary {
+        border-radius: 4px;
+        color: $greyscale-xxx-light;
+        background-color: $primary;
+      }
+
+      .neutral {
+        border-radius: 4px;
+        color: $greyscale-xxx-light;
+        background-color: $greyscale;
+      }
+
+      .danger {
+        border-radius: 4px;
+        color: $greyscale-xxx-light;
+        background-color: $danger;
+      }
+
+      .alert {
+        border-radius: 4px;
+        color: $greyscale-xxx-light;
+        background-color: $alert;
+      }
+
+      .info {
+        border-radius: 4px;
+        color: $greyscale-xxx-light;
+        background-color: $info;
+      }
+
+      &:hover {
+        background-color: rgb(241, 241, 241);
+        //color: $greyscale-xxx-light;
+        //box-shadow: $shadow;
+        cursor: pointer;
+
+        .rowLabel {
+          //color: $greyscale-xxx-light;
+        }
+      }
     }
   }
 }
+

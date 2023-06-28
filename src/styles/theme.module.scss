@@ -14,17 +14,21 @@ $greyscale-x-dark: darken($greyscale, 20%);
 $greyscale-xx-dark: darken($greyscale, 40%);
 $greyscale-xxx-dark: darken($greyscale, 100%);
 
+// Success
+$success: #32ff43;
+$success-light: lighten($success, 15%);
+
 // Danger
 $danger: #ff3232;
-$danger-light: lighten($danger, 36%);
+$danger-light: lighten($danger, 15%);
 
 // Alert
 $alert: #ffbe32;
-$alert-light: lighten($alert, 36%);
+$alert-light: lighten($alert, 15%);
 
 // Info
 $info: #32cfff;
-$info-light: lighten($info, 36%);
+$info-light: lighten($info, 15%);
 
 // Shadow
 $shadow: 0 0 10px rgba(0, 0, 0, 0.42);

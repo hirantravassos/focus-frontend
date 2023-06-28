@@ -1,7 +1,6 @@
 @import "@/styles/theme.module";
 
 @mixin invalid() {
-  border: 1px solid $danger;
   background-color: $danger;
 }
 

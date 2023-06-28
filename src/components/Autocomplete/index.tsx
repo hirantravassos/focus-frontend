@@ -1,19 +1,23 @@
 'use client';
 
 import styles from './index.module.scss';
-import {Fragment, MouseEventHandler, useEffect, useRef, useState} from 'react';
+import {ComponentType, Fragment, MouseEventHandler, useEffect, useRef, useState} from 'react';
 import {AnimatePresence, motion as m} from 'framer-motion'
 import {animationDefault, animationPopUp} from "@/styles/framer-motion";
 import {Icon} from "@iconify/react";
 import {Mask} from "@/utils/mask";
 import {NumericFormat} from 'react-number-format';
-import {webpack} from "next/dist/compiled/webpack/webpack";
+import {IColor} from "@/styles/theme";
 
 type IAutocomplete = {
+    removeSelectionLabel?: string,
+    data: { [key: string]: any }[] | [],
+    dataComponents?: {component: ComponentType<any>}[],
+    maxHeight: string,
     label?: string,
     name?: string,
     width?: string,
-    value?: string | null,
+    value?: {key: string, selected: any | null | undefined},
     icon?: string,
     loading?: boolean,
     hint?: string | null,
@@ -23,25 +27,18 @@ type IAutocomplete = {
     invalid?: boolean,
     errorMessage?: string,
     onChange?: (value: any) => void,
-    onSearch?: (value: string) => void,
-    decimals?: number,
-    max?: number
-    min?: number
-} & (
-    | { type?: 'number', decimals: number, max?: number, min?: number }
-    | { type?: 'text' | 'currency' | 'email' | 'password' }
-    );
+}
 
 export default function HcAutocomplete(
     {
+        removeSelectionLabel = `Remover`,
+        data,
+        dataComponents,
+        maxHeight = '350px',
         label,
         name,
         width = '100%',
-        value = null,
-        type = `text`,
-        decimals,
-        max,
-        min,
+        value,
         icon,
         hint = null,
         mask = null,
@@ -50,19 +47,17 @@ export default function HcAutocomplete(
         invalid = false,
         errorMessage = ``,
         onChange,
-        onSearch,
     }: IAutocomplete) {
+    const [hasValue, setHasValue] = useState<boolean>(false)
+    const [valueToDisplay, setValueToDisplay] = useState<any>(null)
+    const [searchValue, setSearchValue] = useState<string>(``)
     const [focus, setFocus] = useState<boolean>(false)
     const [hover, setHover] = useState<boolean>(false)
     const [show, setShow] = useState<boolean>(false)
-
     const [isInvalid, setIsInvalid] = useState<boolean>(false)
 
     const handleSearch = (e: any) => {
-        const responseValue = handleMask(e.target.value)
-        if (onSearch) {
-            onSearch(responseValue?.raw)
-        }
+        setSearchValue(e?.target?.value)
     }
 
     const handleChange = (allValuesFromRow: any) => {
@@ -79,31 +74,9 @@ export default function HcAutocomplete(
         return {mask: unmaskedValue, raw: unmaskedValue}
     }
 
-    const handleNumberLimits = (values: any) => {
-        const {floatValue} = values;
-        if (!floatValue || floatValue === 0) return true
-
-
-        let allowed = true
-        if (!!max && !!min) {
-            allowed = floatValue <= max && floatValue >= min;
-        }
-
-        if (!min && !!max) {
-            allowed = floatValue <= max;
-        }
-
-        if (!max && !!min) {
-            allowed = floatValue >= min;
-        }
-
-        return allowed
-    }
-
     const handleRequired = () => {
         setIsInvalid(false)
-        const isEmpty = value?.length === 0 && required
-        if (isEmpty) setIsInvalid(true)
+        if (!hasValue && required) setIsInvalid(true)
     }
 
     useEffect(() => {
@@ -112,12 +85,19 @@ export default function HcAutocomplete(
         }, 50)
     }, [focus])
 
+    useEffect(() => {
+        setValueToDisplay(value?.selected?.[value?.key])
+        setHasValue(!!value?.selected)
+    }, [value])
+
+    console.log(label, `hasValue`,hasValue, value)
+
     return (
         <m.div
             {...animationDefault}
             className={
                 `${styles.main} ` +
-                `${value ? styles.value : ``} ` +
+                `${hasValue ? styles.value : ``} ` +
                 `${disabled ? styles.disabled : ``} `
             }
             style={{
@@ -145,67 +125,79 @@ export default function HcAutocomplete(
                 {icon &&
                     <Icon className={styles.icon} icon={icon}/>
                 }
-                {type === `number` || type === `currency` ?
-                    <NumericFormat
-                        className={
-                            `${styles.input} ` +
-                            `${icon ? styles.has_icon : ``} `
-                        }
-                        value={value}
-                        disabled={disabled}
-                        onValueChange={(values) => {
-                            const syntheticEvent = {
-                                target: {value: values.floatValue}
-                            }
-                            handleSearch(syntheticEvent)
-                        }}
-                        onKeyUp={handleRequired}
-                        isAllowed={handleNumberLimits}
-                        thousandSeparator=""
-                        decimalSeparator=","
-                        allowedDecimalSeparators={['.', ',']}
-                        decimalScale={type === `currency` ? 2 : decimals}
-                        fixedDecimalScale={type === `currency`}
-                    />
-                    :
-                    <input
-                        className={
-                            `${styles.input} ` +
-                            `${icon ? styles.has_icon : ``} `
-                        }
-                        value={handleMask(value)?.mask || ``}
-                        onChange={handleSearch}
-                        onKeyUp={handleRequired}
-                        disabled={disabled}
-                    />
-                }
+                <span className={styles.input}>
+                    {valueToDisplay}
+                </span>
+                <input
+                    className={
+                        `${styles.searchInput} `
+                    }
+                    value={mask ? handleMask(searchValue)?.mask || `` : searchValue}
+                    onInput={handleSearch}
+                    disabled={disabled}
+                />
             </div>
             <div className={
                 `${styles.bottom} ` +
                 `${disabled ? styles.disabled : ``} `
             }>
-                {required && value?.length === 0 && errorMessage &&
+                {required && !hasValue && errorMessage &&
                     <span className={styles.errorMessage}>{errorMessage}</span>
                 }
             </div>
             <AnimatePresence>
                 {show && !disabled &&
                     <m.div
-                        className={styles.list}
+                        className={styles.container}
+                        style={{minHeight: `calc(${maxHeight} + 60px)`}}
                         {...animationPopUp}
                     >
-                        {mockData?.map((row, index) => {
-                            return (
-                                <Fragment key={index}>
-                                    <div
-                                        className={styles.row}
-                                        onClick={() => handleChange(row)}
-                                    >
-                                        <span>{row?.value}</span>
-                                    </div>
-                                </Fragment>
-                            )
-                        })}
+                        <div className={styles.rowSearch}>
+                            <Icon
+                                className={styles.rowSearchIcon}
+                                icon={`material-symbols:search`}
+                            />
+                        </div>
+                        <div
+                            className={styles.list}
+                            style={{maxHeight: maxHeight}}
+                        >
+                            {data?.map((row: any, index: number) => {
+                                const hasValue = !!value && index === 0
+
+                                let rowKeys: string[] = []
+                                for (let rowKey in row) {
+                                    rowKeys.push(rowKey)
+                                }
+
+                                return (
+                                    <Fragment key={index}>
+                                        {hasValue &&
+                                            <div
+                                                className={`${styles.row} ${styles.removeValue}`}
+                                                onClick={() => handleChange({id: -1, value: ``})}
+                                            >
+                                                <Icon className={styles.rowIcon} icon={`mdi:delete-sweep`}/>
+                                                <span>{removeSelectionLabel}</span>
+                                            </div>
+                                        }
+                                        {dataComponents?.map((component, componentIndex) => {
+                                            const DataComponent = component?.component
+                                            return (
+                                                <Fragment key={componentIndex}>
+                                                    <div
+                                                        className={styles.row}
+                                                        onClick={() => handleChange(row)}
+                                                    >
+                                                        <DataComponent values={row}/>
+                                                    </div>
+                                                </Fragment>
+                                            )
+                                        })}
+                                    </Fragment>
+                                )
+                            })}
+                        </div>
                     </m.div>
                 }
             </AnimatePresence>
@@ -213,9 +205,3 @@ export default function HcAutocomplete(
     );
 }
 
-const mockData = [
-    {id: 0, value: `Valor 1`},
-    {id: 1, value: `Valor 2`},
-    {id: 2, value: `Valor 3`},
-    {id: 3, value: `Valor 4`},
-]
