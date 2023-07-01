@@ -5,16 +5,17 @@ import HcInput from "@/components/Input";
 import React, {useState, useEffect} from "react";
 import HcAutocomplete from "@/components/Autocomplete";
 import {IColor} from "@/styles/theme";
+import {Mask} from "@/utils/mask";
 
 export default function Home() {
     return (
         <>
             <main style={{display: 'flex', flexDirection: 'row'}}>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <ButtonsDemo/>
+                    {/*<ButtonsDemo/>*/}
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
-                    <InputsDemo/>
+                    {/*<InputsDemo/>*/}
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <AutocompleteDemo/>
@@ -205,7 +206,7 @@ function AutocompleteDemo() {
             {
                 component: ({values}: any) => {
                     return (
-                        <div>{values?.cnpj}</div>
+                        <div>{Mask(values?.cnpj, `000.000.000-00`)?.mask}</div>
                     )
                 }
             }
@@ -235,10 +236,20 @@ function AutocompleteDemo() {
         console.log(`data`, data)
     }, [data])
 
+    const [loading, setLoading] = useState<boolean>(true)
+    const fetchMockData = (): any => {
+        setTimeout(() => {
+            setLoading(false)
+        },3000)
+
+        return mockData
+    }
+
     return (
         <>
             <HcAutocomplete
-                data={mockData}
+                data={fetchMockData()}
+                loading={loading}
                 dataComponents={dataComponents?.data1}
                 label={`Habilitado Obrigatório`}
                 name={`name`}
@@ -251,6 +262,7 @@ function AutocompleteDemo() {
                     data1: value
                 }))}
                 errorMessage={`Campo obrigatório!`}
+                removeSelectionLabel={`Limpar valores`}
             />
             <HcAutocomplete
                 data={mockData}
@@ -273,13 +285,14 @@ function AutocompleteDemo() {
                 name={`name`}
                 width={'300px'}
                 maxHeight={`200px`}
-                value={{key: `value`, selected: data?.data3}}
+                value={{key: `number`, selected: data?.data3}}
                 icon={`icon-park-twotone:edit-name`}
                 required={true}
                 onChange={(value) => setData((prev: any) => ({
                     ...prev,
                     data3: value
                 }))}
+                errorMessage={`Campo obrigatório!`}
             />
             <HcAutocomplete
                 data={mockData}

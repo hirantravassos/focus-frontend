@@ -12,12 +12,12 @@ import {IColor} from "@/styles/theme";
 type IAutocomplete = {
     removeSelectionLabel?: string,
     data: { [key: string]: any }[] | [],
-    dataComponents?: {component: ComponentType<any>}[],
-    maxHeight: string,
+    dataComponents?: { component: ComponentType<any> }[],
+    maxHeight?: string,
     label?: string,
     name?: string,
     width?: string,
-    value?: {key: string, selected: any | null | undefined},
+    value?: { key: string, selected: any | null | undefined },
     icon?: string,
     loading?: boolean,
     hint?: string | null,
@@ -31,7 +31,7 @@ type IAutocomplete = {
 
 export default function HcAutocomplete(
     {
-        removeSelectionLabel = `Remover`,
+        removeSelectionLabel = `Clear`,
         data,
         dataComponents,
         maxHeight = '350px',
@@ -40,6 +40,7 @@ export default function HcAutocomplete(
         width = '100%',
         value,
         icon,
+        loading = false,
         hint = null,
         mask = null,
         required = false,
@@ -48,6 +49,8 @@ export default function HcAutocomplete(
         errorMessage = ``,
         onChange,
     }: IAutocomplete) {
+    const listRef = useRef(null)
+    const [listHeight, setListHeight] = useState<number>(0)
     const [hasValue, setHasValue] = useState<boolean>(false)
     const [valueToDisplay, setValueToDisplay] = useState<any>(null)
     const [searchValue, setSearchValue] = useState<string>(``)
@@ -55,6 +58,7 @@ export default function HcAutocomplete(
     const [hover, setHover] = useState<boolean>(false)
     const [show, setShow] = useState<boolean>(false)
     const [isInvalid, setIsInvalid] = useState<boolean>(false)
+    const [firstFocus, setFirstFocus] = useState<boolean>(true)
 
     const handleSearch = (e: any) => {
         setSearchValue(e?.target?.value)
@@ -75,13 +79,47 @@ export default function HcAutocomplete(
     }
 
     const handleRequired = () => {
+        console.log(`handleRequired`, hasValue)
         setIsInvalid(false)
         if (!hasValue && required) setIsInvalid(true)
     }
 
+    const isValuesInSearch = (json: any) => {
+        if (!searchValue || searchValue === ``) return true
+
+        let keys: string[] = []
+        for (let key in json) {
+            keys.push(key)
+        }
+
+        let exists = false
+        keys?.map((key: string) => {
+            try {
+                const _searchValue = mask ? Mask(searchValue, mask)?.raw : searchValue
+                const keyValue = String(json?.[key])
+                if (keyValue.includes(_searchValue)) exists = true
+            } catch (e) {
+            }
+        })
+
+        return exists
+    }
+
     useEffect(() => {
+        // @ts-ignore
+        const newHeight = listRef?.current?.clientHeight
+
+        setListHeight(newHeight !== 0 ? newHeight : 60)
+    }, [show, searchValue, loading, disabled])
+
+    useEffect(() => {
+        if (focus) setFirstFocus(false)
+
         setTimeout(() => {
+
             setShow(focus)
+            setShow(focus)
+            setSearchValue(``)
         }, 50)
     }, [focus])
 
@@ -90,7 +128,11 @@ export default function HcAutocomplete(
         setHasValue(!!value?.selected)
     }, [value])
 
-    console.log(label, `hasValue`,hasValue, value)
+    useEffect(() => {
+        if (!firstFocus) {
+            handleRequired()
+        }
+    }, [hasValue])
 
     return (
         <m.div
@@ -125,8 +167,11 @@ export default function HcAutocomplete(
                 {icon &&
                     <Icon className={styles.icon} icon={icon}/>
                 }
-                <span className={styles.input}>
-                    {valueToDisplay}
+                <span className={
+                    `${styles.input} ` +
+                    `${icon ? styles.has_icon : ``}`
+                }>
+                    {mask ? Mask(valueToDisplay, mask)?.mask : valueToDisplay}
                 </span>
                 <input
                     className={
@@ -141,7 +186,7 @@ export default function HcAutocomplete(
                 `${styles.bottom} ` +
                 `${disabled ? styles.disabled : ``} `
             }>
-                {required && !hasValue && errorMessage &&
+                {required && !hasValue && !firstFocus && errorMessage &&
                     <span className={styles.errorMessage}>{errorMessage}</span>
                 }
             </div>
@@ -149,7 +194,7 @@ export default function HcAutocomplete(
                 {show && !disabled &&
                     <m.div
                         className={styles.container}
-                        style={{minHeight: `calc(${maxHeight} + 60px)`}}
+                        style={{minHeight: `${loading ? `100px` : `calc(${listHeight}px + 65px)`}`}}
                         {...animationPopUp}
                     >
                         <div className={styles.rowSearch}>
@@ -159,44 +204,48 @@ export default function HcAutocomplete(
                             />
                         </div>
                         <div
+                            ref={listRef}
                             className={styles.list}
                             style={{maxHeight: maxHeight}}
                         >
-                            {data?.map((row: any, index: number) => {
-                                const hasValue = !!value && index === 0
+                            {!loading ?
+                                data?.map((row: any, index: number) => {
+                                    const hasValue = !!value && index === 0
 
-                                let rowKeys: string[] = []
-                                for (let rowKey in row) {
-                                    rowKeys.push(rowKey)
-                                }
+                                    if (!isValuesInSearch(row)) return
 
-                                return (
-                                    <Fragment key={index}>
-                                        {hasValue &&
-                                            <div
-                                                className={`${styles.row} ${styles.removeValue}`}
-                                                onClick={() => handleChange({id: -1, value: ``})}
-                                            >
-                                                <Icon className={styles.rowIcon} icon={`mdi:delete-sweep`}/>
-                                                <span>{removeSelectionLabel}</span>
-                                            </div>
-                                        }
-                                        {dataComponents?.map((component, componentIndex) => {
-                                            const DataComponent = component?.component
-                                            return (
-                                                <Fragment key={componentIndex}>
-                                                    <div
-                                                        className={styles.row}
-                                                        onClick={() => handleChange(row)}
-                                                    >
-                                                        <DataComponent values={row}/>
-                                                    </div>
-                                                </Fragment>
-                                            )
-                                        })}
-                                    </Fragment>
-                                )
-                            })}
+                                    return (
+                                        <Fragment key={index}>
+                                            {hasValue &&
+                                                <div
+                                                    className={`${styles.row} ${styles.removeValue}`}
+                                                    onClick={() => handleChange(null)}
+                                                >
+                                                    <Icon className={styles.rowIcon} icon={`mdi:delete-sweep`}/>
+                                                    <span>{removeSelectionLabel}</span>
+                                                </div>
+                                            }
+                                            {dataComponents?.map((component, componentIndex) => {
+                                                const DataComponent = component?.component
+                                                return (
+                                                    <Fragment key={componentIndex}>
+                                                        <div
+                                                            className={styles.row}
+                                                            onClick={() => handleChange(row)}
+                                                        >
+                                                            <DataComponent values={row}/>
+                                                        </div>
+                                                    </Fragment>
+                                                )
+                                            })}
+                                        </Fragment>
+                                    )
+                                })
+                                :
+                                <div className={styles.loading}>
+                                    <Icon className={styles.icon} icon={`svg-spinners:ring-resize`}/>
+                                </div>
+                            }
                         </div>
                     </m.div>
                 }
