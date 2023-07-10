@@ -116,7 +116,6 @@ export default function HcAutocomplete(
         if (focus) setFirstFocus(false)
 
         setTimeout(() => {
-
             setShow(focus)
             setShow(focus)
             setSearchValue(``)

@@ -1,11 +1,12 @@
 'use client'
 
-import HcButton from "@/components/Button";
-import HcInput from "@/components/Input";
+import HcButton from "../components/HcButton";
+import HcInput from "../components/HcInput";
 import React, {useState, useEffect} from "react";
-import HcAutocomplete from "@/components/Autocomplete";
+import HcAutocomplete from "../components/HcAutocomplete";
 import {IColor} from "@/styles/theme";
 import {Mask} from "@/utils/mask";
+import HcTable from "@/components/HcTable";
 
 export default function Home() {
     return (
@@ -19,6 +20,9 @@ export default function Home() {
                 </div>
                 <div style={{display: 'flex', flexDirection: 'column'}}>
                     <AutocompleteDemo/>
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column', width: '800px'}}>
+                    <TableDemo/>
                 </div>
             </main>
         </>
@@ -240,7 +244,7 @@ function AutocompleteDemo() {
     const fetchMockData = (): any => {
         setTimeout(() => {
             setLoading(false)
-        },3000)
+        }, 3000)
 
         return mockData
     }
@@ -265,7 +269,7 @@ function AutocompleteDemo() {
                 removeSelectionLabel={`Limpar valores`}
             />
             <HcAutocomplete
-                data={mockData}
+                data={mockData()}
                 dataComponents={dataComponents?.data2}
                 label={`Mascara`}
                 name={`mask`}
@@ -279,7 +283,7 @@ function AutocompleteDemo() {
                 }))}
             />
             <HcAutocomplete
-                data={mockData}
+                data={mockData()}
                 dataComponents={dataComponents?.data3}
                 label={`Nome e ícone`}
                 name={`name`}
@@ -295,7 +299,7 @@ function AutocompleteDemo() {
                 errorMessage={`Campo obrigatório!`}
             />
             <HcAutocomplete
-                data={mockData}
+                data={mockData()}
                 dataComponents={dataComponents?.data4}
                 label={`Nome Completo e Hint`}
                 name={`name`}
@@ -309,7 +313,7 @@ function AutocompleteDemo() {
                 }))}
             />
             <HcAutocomplete
-                data={mockData}
+                data={mockData()}
                 dataComponents={[]}
                 label={`Nome Completo`}
                 name={`name`}
@@ -319,7 +323,7 @@ function AutocompleteDemo() {
                 disabled={true}
             />
             <HcAutocomplete
-                data={mockData}
+                data={mockData()}
                 label={`Desabilitado Sem Valor`}
                 name={`name`}
                 width={'300px'}
@@ -331,81 +335,87 @@ function AutocompleteDemo() {
     )
 }
 
-const mockData = [
-    {id: 0, value: `Valor 1`, cnpj: `12345678910`, number: 0.123},
-    {id: 1, value: `Valor 2`, cnpj: `12345678920`, number: 111.123},
-    {id: 2, value: `Valor 3`, cnpj: `12345678930`, number: 222.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-    {id: 3, value: `Valor 4`, cnpj: `12345678940`, number: 333.123},
-]
+function TableDemo() {
+    const headers = [
+        {key: "id", label: `ID`},
+        {key: "value", label: `Value`},
+        {key: "cnpj", label: `CNPJ`},
+        {key: "number", label: `Number`},
+    ]
+
+    const rowComponents = [
+        {
+            flex: 1,
+            direction: `column`,
+            component: ({values}: any) => {
+                return (
+                    <div>{values?.id}</div>
+                )
+            }
+        },
+        {
+            flex: 1,
+            direction: `column`,
+            component: ({values}: any) => {
+                return (
+                    <div>{values?.value}</div>
+                )
+            }
+        },
+        {
+            flex: 1,
+            direction: `column`,
+            component: ({values}: any) => {
+                const cnpj = Mask(values?.cnpj || ``, "000.000.000-00")?.mask
+
+                return (
+                    <div>{cnpj}</div>
+                )
+            }
+        },
+        {
+            flex: 1,
+            direction: `column`,
+            component: ({values}: any) => {
+                return (
+                    <div>{values?.number}</div>
+                )
+            }
+        }
+    ]
+
+    const [loading, setLoading] = useState<boolean>(true)
+    const fetchMockData = (): any => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 3000)
+
+        return mockData
+    }
+
+    return (
+        <>
+            <HcTable
+                data={mockData(100)}
+                headers={headers}
+                rowComponents={rowComponents}
+                pagination={{optionsItemsPerPage: [5, 10, 15, 20, 25, 30, 35, 50, 100]}}
+            />
+        </>
+    )
+}
+
+const mockData = (limit: number = 100) => {
+    const tempData = []
+
+    for (let i = 0; i < limit; i++) {
+        tempData.push({
+            id: i,
+            value: `Valor ${i}`,
+            cnpj: `${Math.floor(Math.random() * (99999999999 - 10000000000 + 1)) + 10000000000}`,
+            number: `${Math.floor(Math.random() * (99999999999 - 10000000000 + 1)) + 10000000000}`
+        })
+    }
+
+    return tempData
+}
